@@ -1,6 +1,6 @@
 {
   "name": "@zeroroot-ai/brand",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ZeroRoot brand design tokens, CSS custom properties, and theme utilities",
   "license": "Apache-2.0",
   "type": "module",
@@ -13,7 +13,9 @@
     "./tokens.css": "./dist/tokens.css",
     "./globals.css": "./dist/globals.css"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test src/__tests__/tokens.test.mjs",
