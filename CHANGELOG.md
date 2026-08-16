@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/zeroroot-ai/brand/compare/brand-v0.2.0...brand-v0.2.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* **release:** restore the pre-1.0 guardrail ([#9](https://github.com/zeroroot-ai/brand/issues/9)) ([6e4a6d8](https://github.com/zeroroot-ai/brand/commit/6e4a6d811c687750370c15e6bd92576632e96151))
+
 ## [0.2.0](https://github.com/zeroroot-ai/brand/compare/brand-v0.1.0...brand-v0.2.0) (2026-08-15)
 
 
