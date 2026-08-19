@@ -27,7 +27,7 @@ const brand = await import(join(DIST, "index.js"));
 const { PALETTE, SEMANTIC, SPECIALTY, DRACULA, TYPOGRAPHY, LEGACY_ALIASES, ALL_TOKENS, TOKEN_NAMES } = brand;
 
 // ---------------------------------------------------------------------------
-// Colour maths — oklch() → relative luminance → WCAG contrast ratio.
+// Color math — oklch() → relative luminance → WCAG contrast ratio.
 // ---------------------------------------------------------------------------
 
 function parseOklch(value) {
@@ -60,7 +60,7 @@ function toLinearRgb({ L, C, h }) {
 
 function luminance(cssColor) {
   const oklch = parseOklch(cssColor);
-  assert.ok(oklch, `not an oklch() colour: ${cssColor}`);
+  assert.ok(oklch, `not an oklch() color: ${cssColor}`);
   const [r, g, b] = toLinearRgb(oklch);
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
@@ -119,7 +119,7 @@ describe("acid is a fill, never text", () => {
   test("--primary fails as text on the ground, which is why --highlight exists", () => {
     assert.ok(
       contrast(SEMANTIC.primary, SEMANTIC.background) < 3,
-      "acid must NOT be legible as text on the ground — if this passes, the fill has been darkened into a text colour",
+      "acid must NOT be legible as text on the ground — if this passes, the fill has been darkened into a text color",
     );
   });
 
@@ -142,7 +142,7 @@ describe("UI affordances", () => {
   // WCAG 2.1 asks 3:1 for the boundary of a control, not the 4.5:1 text needs.
   // The dashboard's own token-contrast test caught --input failing this at
   // 1.93:1 after the re-skin: the brand's tests covered text pairs and state
-  // colours but never the affordances, so a field boundary you could not see
+  // colors but never the affordances, so a field boundary you could not see
   // shipped. Both suites check it now; this is the one that owns the value.
   test("the input boundary and the focus ring clear 3:1 on the ground", () => {
     for (const name of ["input", "ring"]) {
@@ -152,7 +152,7 @@ describe("UI affordances", () => {
   });
 });
 
-describe("enforcement colours", () => {
+describe("enforcement colors", () => {
   test("granted, pending and refused all clear AA on the ground", () => {
     for (const name of ["granted", "pending", "refused"]) {
       assert.ok(

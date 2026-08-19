@@ -11,7 +11,7 @@
  *      on this ground. It fills buttons, active plates and live-state chips,
  *      with --primary-foreground on top. Green TEXT is --highlight, which is
  *      dark enough to read.
- *   2. COLOUR MEANS ENFORCEMENT. --alt/--granted, --warning/--pending and
+ *   2. Color MEANS ENFORCEMENT. --alt/--granted, --warning/--pending and
  *      --destructive/--refused report what the runtime did. They are not
  *      decoration and are not used for emphasis.
  *
@@ -85,7 +85,7 @@
   --popover:                oklch(0.985 0.003 100);
   --popover-foreground:     oklch(0.160 0.010 100);
 
-  /* Acid. A FILL colour — never set type in it. */
+  /* Acid. A FILL color — never set type in it. */
   --primary:                oklch(0.860 0.215 128);
   --primary-foreground:     oklch(0.180 0.070 128);
 
