@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.1...brand-v0.3.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* **tokens:** American English in the package's prose ([#16](https://github.com/zeroroot-ai/brand/issues/16)) ([e1c352f](https://github.com/zeroroot-ai/brand/commit/e1c352ffb9175f3bd352c320405fd365b9a8e16e))
+
 ## [0.3.1](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.0...brand-v0.3.1) (2026-08-19)
 
 
