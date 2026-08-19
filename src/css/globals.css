@@ -19,7 +19,7 @@
  *
  * Acid (--primary) is a FILL. It fails contrast at text sizes on this
  * ground, so type is never set in it; --highlight is the green that carries
- * text. Enforcement colours (--granted/--pending/--refused) report what the
+ * text. Enforcement colors (--granted/--pending/--refused) report what the
  * runtime did and are never used for emphasis.
  * Semantic tokens drive every Shadcn primitive; specialty tokens
  * (--highlight, --alt, --link, --glow-strength, --scanline-opacity)
@@ -28,7 +28,7 @@
  * ---------------------------------------------------------------------- */
 
 /* Fonts and tokens are authored once, in their own files, and pulled in here.
- * Editing a colour means editing tokens.css and nothing else. */
+ * Editing a color means editing tokens.css and nothing else. */
 @import "./fonts.css";
 @import "./tokens.css";
 

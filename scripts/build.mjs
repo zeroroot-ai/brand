@@ -3,7 +3,7 @@
  * @zeroroot-ai/brand build script — zero external dependencies.
  *
  * src/css/tokens.css is the SINGLE SOURCE for every token value. This script
- * parses it and derives the JS/TS exports, so a colour is written in exactly
+ * parses it and derives the JS/TS exports, so a color is written in exactly
  * one place. It used to carry its own copy of every value, which meant the
  * package held four transcriptions of the same palette (tokens.css,
  * globals.css, src/tokens.ts and this file) with nothing checking that they
