@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.0...brand-v0.3.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* **tokens:** make the input boundary visible on the concrete ground ([#14](https://github.com/zeroroot-ai/brand/issues/14)) ([49c2924](https://github.com/zeroroot-ai/brand/commit/49c2924111ecaea81b222af0854b8a7d5e45bb29))
+
 ## [0.3.0](https://github.com/zeroroot-ai/brand/compare/brand-v0.2.1...brand-v0.3.0) (2026-08-19)
 
 
