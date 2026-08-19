@@ -1,134 +1,236 @@
 /**
- * @zeroroot/brand — token export tests.
+ * @zeroroot-ai/brand — token tests.
  *
- * Runs against the built dist/index.js.
- * Run: node --test src/__tests__/tokens.test.mjs
- * (build first: node scripts/build.mjs)
+ * These assert the RULES of the acid-concrete brand rather than echoing its
+ * values back. A test that restates the hex it is testing catches nothing; a
+ * test that says "acid must fail as text and highlight must pass" catches the
+ * mistake that would actually ship.
+ *
+ * Runs against the built dist/. Build first: node scripts/build.mjs
  */
 
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DIST = join(__dirname, "../../dist/index.js");
+const DIST = join(__dirname, "../../dist");
 
-if (!existsSync(DIST)) {
+if (!existsSync(join(DIST, "index.js"))) {
   console.log("SKIP: dist/index.js not found — run 'node scripts/build.mjs' first.");
   process.exit(0);
 }
 
-const brand = await import(DIST);
+const brand = await import(join(DIST, "index.js"));
 const { PALETTE, SEMANTIC, SPECIALTY, DRACULA, TYPOGRAPHY, LEGACY_ALIASES, ALL_TOKENS, TOKEN_NAMES } = brand;
 
-describe("@zeroroot/brand token exports", () => {
-  test("PALETTE has three ramps (base, primary, secondary)", () => {
-    assert.ok(PALETTE.base, "PALETTE.base missing");
-    assert.ok(PALETTE.primary, "PALETTE.primary missing");
-    assert.ok(PALETTE.secondary, "PALETTE.secondary missing");
-  });
+// ---------------------------------------------------------------------------
+// Colour maths — oklch() → relative luminance → WCAG contrast ratio.
+// ---------------------------------------------------------------------------
 
-  test("PALETTE ramps each have 12 steps", () => {
+function parseOklch(value) {
+  const m = value.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
+  if (!m) return null;
+  return { L: Number(m[1]), C: Number(m[2]), h: Number(m[3]) };
+}
+
+/** oklch → linear-light sRGB, clamped. */
+function toLinearRgb({ L, C, h }) {
+  const hr = (h * Math.PI) / 180;
+  const a = C * Math.cos(hr);
+  const b = C * Math.sin(hr);
+
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+
+  const l = l_ ** 3;
+  const m = m_ ** 3;
+  const s = s_ ** 3;
+
+  const clamp = (x) => Math.min(1, Math.max(0, x));
+  return [
+    clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+  ];
+}
+
+function luminance(cssColor) {
+  const oklch = parseOklch(cssColor);
+  assert.ok(oklch, `not an oklch() colour: ${cssColor}`);
+  const [r, g, b] = toLinearRgb(oklch);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+// ---------------------------------------------------------------------------
+
+describe("token exports", () => {
+  test("PALETTE has three ramps of twelve steps", () => {
     for (const ramp of ["base", "primary", "secondary"]) {
-      const steps = Object.keys(PALETTE[ramp]);
-      assert.strictEqual(steps.length, 12, `PALETTE.${ramp} should have 12 steps, got ${steps.length}`);
+      assert.ok(PALETTE[ramp], `PALETTE.${ramp} missing`);
+      assert.strictEqual(Object.keys(PALETTE[ramp]).length, 12, `PALETTE.${ramp}`);
     }
   });
 
-  test("PALETTE base-1000 is the darkest value", () => {
-    assert.strictEqual(PALETTE.base["1000"], "oklch(0.090 0.010 280)");
-  });
-
-  test("SEMANTIC has expected key tokens with correct values", () => {
-    assert.strictEqual(SEMANTIC.background, "oklch(0.17 0.012 280)", "background");
-    assert.strictEqual(SEMANTIC.foreground, "oklch(0.96 0.008 280)", "foreground");
-    assert.strictEqual(SEMANTIC.primary, "oklch(0.58 0.225 295)", "primary (electric violet)");
-    assert.strictEqual(SEMANTIC.border, "oklch(0.34 0.020 280)", "border");
-    assert.ok(SEMANTIC.radius, "radius should be present");
-  });
-
-  test("SEMANTIC has all 34 expected keys", () => {
-    const expectedKeys = [
-      "background", "foreground", "card", "card-foreground",
-      "popover", "popover-foreground", "primary", "primary-foreground",
-      "secondary", "secondary-foreground", "muted", "muted-foreground",
-      "accent", "accent-foreground", "destructive", "destructive-foreground",
-      "error-text", "warning", "warning-foreground", "success-foreground",
-      "overlay", "border", "input", "ring",
-      "chart-1", "chart-2", "chart-3", "chart-4", "chart-5",
-      "radius", "sidebar", "sidebar-foreground", "sidebar-primary",
-      "sidebar-primary-foreground", "sidebar-accent", "sidebar-accent-foreground",
-      "sidebar-border", "sidebar-ring",
-    ];
-    for (const key of expectedKeys) {
-      assert.ok(key in SEMANTIC, `SEMANTIC missing key: ${key}`);
+  test("every group is populated", () => {
+    for (const [name, group] of Object.entries({ SEMANTIC, SPECIALTY, DRACULA, TYPOGRAPHY, LEGACY_ALIASES })) {
+      assert.ok(Object.keys(group).length > 0, `${name} is empty`);
     }
   });
 
-  test("SPECIALTY has the 7 expected tokens", () => {
-    const expectedKeys = ["highlight", "alt", "link", "glow-strength", "scanline-opacity", "scanline-color", "terminal-bg"];
-    for (const key of expectedKeys) {
-      assert.ok(key in SPECIALTY, `SPECIALTY missing key: ${key}`);
+  test("TOKEN_NAMES covers ALL_TOKENS", () => {
+    assert.deepStrictEqual(TOKEN_NAMES.sort(), Object.keys(ALL_TOKENS).sort());
+  });
+});
+
+describe("one locked LIGHT brand", () => {
+  test("the ground is light and the ink is dark", () => {
+    assert.ok(luminance(SEMANTIC.background) > 0.55, "background should be a light ground");
+    assert.ok(luminance(SEMANTIC.foreground) < 0.08, "foreground should be near-black ink");
+  });
+
+  test("body text clears AA against the ground", () => {
+    assert.ok(
+      contrast(SEMANTIC.foreground, SEMANTIC.background) >= 4.5,
+      "foreground on background must clear 4.5:1",
+    );
+  });
+
+  test("muted text still clears AA against the ground", () => {
+    assert.ok(
+      contrast(SEMANTIC["muted-foreground"], SEMANTIC.background) >= 4.5,
+      "muted-foreground on background must clear 4.5:1",
+    );
+  });
+});
+
+describe("acid is a fill, never text", () => {
+  // The whole accent discipline in two assertions. If someone "fixes" the first
+  // failure by darkening --primary, the second one holds the line: acid has to
+  // stay bright enough to read as a fill with dark type on it.
+  test("--primary fails as text on the ground, which is why --highlight exists", () => {
+    assert.ok(
+      contrast(SEMANTIC.primary, SEMANTIC.background) < 3,
+      "acid must NOT be legible as text on the ground — if this passes, the fill has been darkened into a text colour",
+    );
+  });
+
+  test("--highlight is the green that carries text, and clears AA", () => {
+    assert.ok(
+      contrast(SPECIALTY.highlight, SEMANTIC.background) >= 4.5,
+      "highlight on background must clear 4.5:1",
+    );
+  });
+
+  test("type on an acid fill clears AA", () => {
+    assert.ok(
+      contrast(SEMANTIC["primary-foreground"], SEMANTIC.primary) >= 4.5,
+      "primary-foreground on primary must clear 4.5:1",
+    );
+  });
+});
+
+describe("enforcement colours", () => {
+  test("granted, pending and refused all clear AA on the ground", () => {
+    for (const name of ["granted", "pending", "refused"]) {
+      assert.ok(
+        contrast(SPECIALTY[name], SEMANTIC.background) >= 4.5,
+        `${name} on background must clear 4.5:1`,
+      );
     }
-    assert.strictEqual(SPECIALTY.highlight, "oklch(0.68 0.255 295)", "highlight (electric violet)");
-    assert.strictEqual(SPECIALTY.link, "oklch(0.80 0.160 235)", "link (cyan-blue)");
-    assert.strictEqual(SPECIALTY.alt, "oklch(0.76 0.170 162)", "alt (emerald)");
   });
 
-  test("DRACULA has all 9 terminal palette entries", () => {
-    const expectedKeys = [
-      "dracula-fg", "dracula-comment", "dracula-cyan", "dracula-green",
-      "dracula-orange", "dracula-pink", "dracula-purple", "dracula-red", "dracula-yellow",
-    ];
-    for (const key of expectedKeys) {
-      assert.ok(key in DRACULA, `DRACULA missing key: ${key}`);
+  test("granted and refused are distinguishable from each other", () => {
+    const g = parseOklch(SPECIALTY.granted);
+    const r = parseOklch(SPECIALTY.refused);
+    const dh = Math.abs(g.h - r.h);
+    assert.ok(Math.min(dh, 360 - dh) > 60, "granted and refused must be far apart in hue");
+  });
+});
+
+describe("inverted bands", () => {
+  test("ink is dark and its foreground clears AA on it", () => {
+    assert.ok(luminance(SPECIALTY.ink) < 0.08, "ink should be near-black");
+    assert.ok(
+      contrast(SPECIALTY["ink-foreground"], SPECIALTY.ink) >= 4.5,
+      "ink-foreground on ink must clear 4.5:1",
+    );
+  });
+
+  test("acid works as an accent ON an inverted band", () => {
+    assert.ok(
+      contrast(SEMANTIC.primary, SPECIALTY.ink) >= 4.5,
+      "primary on ink must clear 4.5:1 — the hero eyebrow depends on it",
+    );
+  });
+});
+
+describe("typography ships what it names", () => {
+  test("the families are the ones the brand self-hosts", () => {
+    assert.match(TYPOGRAPHY["display-family"], /Inter Tight/);
+    assert.match(TYPOGRAPHY["text-family"], /Inter Tight/);
+    assert.match(TYPOGRAPHY["mono-family"], /JetBrains Mono/);
+  });
+
+  test("every @font-face src resolves to a shipped file", () => {
+    const fontsCss = readFileSync(join(DIST, "fonts.css"), "utf8");
+    const shipped = new Set(readdirSync(join(DIST, "fonts")));
+    const refs = [...fontsCss.matchAll(/url\("\.\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
+    assert.ok(refs.length > 0, "fonts.css declares no @font-face src");
+    for (const ref of refs) {
+      assert.ok(shipped.has(ref), `fonts.css references ${ref}, which is not in dist/fonts`);
     }
-    assert.strictEqual(DRACULA["dracula-purple"], "#bd93f9");
   });
 
-  test("TYPOGRAPHY has display-family, display-weight, text-family", () => {
-    assert.ok(TYPOGRAPHY["display-family"].includes("JetBrains Mono"), "display font stack");
-    assert.strictEqual(TYPOGRAPHY["display-weight"], "800");
-    assert.ok(TYPOGRAPHY["text-family"].includes("JetBrains Mono"), "text font stack");
+  test("both named families are actually declared", () => {
+    const fontsCss = readFileSync(join(DIST, "fonts.css"), "utf8");
+    assert.match(fontsCss, /font-family:\s*"Inter Tight"/);
+    assert.match(fontsCss, /font-family:\s*"JetBrains Mono"/);
+  });
+});
+
+describe("no second copy of a token value", () => {
+  test("every exported token is declared in tokens.css with the same value", () => {
+    const css = readFileSync(join(DIST, "tokens.css"), "utf8");
+    const declared = new Map(
+      [...css.matchAll(/^\s*--([a-z0-9-]+):\s*(.+?);\s*$/gim)].map((m) => [m[1], m[2].trim()]),
+    );
+    for (const [name, value] of Object.entries(ALL_TOKENS)) {
+      assert.ok(declared.has(name), `--${name} is exported but not declared in tokens.css`);
+      assert.strictEqual(declared.get(name), value, `--${name} disagrees between tokens.css and the JS export`);
+    }
+    assert.strictEqual(declared.size, Object.keys(ALL_TOKENS).length, "tokens.css declares a token the exports do not");
   });
 
-  test("LEGACY_ALIASES has all 9 --color-zd-* entries", () => {
-    const expectedKeys = [
-      "color-zd-bg", "color-zd-bg-deep", "color-zd-fg",
-      "color-zd-highlight", "color-zd-alt", "color-zd-link",
-      "color-zd-border", "color-zd-accent-purple", "color-zd-accent-orange",
-    ];
-    for (const key of expectedKeys) {
-      assert.ok(key in LEGACY_ALIASES, `LEGACY_ALIASES missing key: ${key}`);
+  test("globals.css does not redeclare tokens", () => {
+    const globals = readFileSync(join(DIST, "globals.css"), "utf8");
+    assert.ok(globals.includes('@import "./tokens.css"'), "globals.css should import tokens.css");
+    assert.ok(globals.includes('@import "./fonts.css"'), "globals.css should import fonts.css");
+    assert.ok(
+      !/^\s*--background:/m.test(globals),
+      "globals.css declares --background itself; tokens.css is the single source",
+    );
+  });
+});
+
+describe("legacy aliases still resolve", () => {
+  test("every --color-zd-* alias has a value", () => {
+    for (const [name, value] of Object.entries(LEGACY_ALIASES)) {
+      assert.match(name, /^color-zd-/);
+      assert.ok(value.length > 0, `${name} is empty`);
     }
   });
 
-  test("LEGACY_ALIASES resolve to correct values", () => {
-    assert.strictEqual(LEGACY_ALIASES["color-zd-bg"], "oklch(0.17 0.012 280)");
-    assert.strictEqual(LEGACY_ALIASES["color-zd-accent-purple"], "oklch(0.58 0.225 295)");
-  });
-
-  test("ALL_TOKENS contains merged entries from all groups", () => {
-    // Check a representative from each group
-    assert.ok("base-50" in ALL_TOKENS, "palette token in ALL_TOKENS");
-    assert.ok("background" in ALL_TOKENS, "semantic token in ALL_TOKENS");
-    assert.ok("highlight" in ALL_TOKENS, "specialty token in ALL_TOKENS");
-    assert.ok("dracula-fg" in ALL_TOKENS, "dracula token in ALL_TOKENS");
-    assert.ok("display-family" in ALL_TOKENS, "typography token in ALL_TOKENS");
-    assert.ok("color-zd-bg" in ALL_TOKENS, "legacy alias in ALL_TOKENS");
-  });
-
-  test("ALL_TOKENS has at least 80 entries", () => {
-    const count = Object.keys(ALL_TOKENS).length;
-    assert.ok(count >= 80, `ALL_TOKENS should have >=80 entries, got ${count}`);
-  });
-
-  test("TOKEN_NAMES is a non-empty array matching ALL_TOKENS keys", () => {
-    assert.ok(Array.isArray(TOKEN_NAMES), "TOKEN_NAMES must be an array");
-    assert.strictEqual(TOKEN_NAMES.length, Object.keys(ALL_TOKENS).length);
-    assert.ok(TOKEN_NAMES.includes("background"), "TOKEN_NAMES includes 'background'");
-    assert.ok(TOKEN_NAMES.includes("highlight"), "TOKEN_NAMES includes 'highlight'");
+  test("the dracula ramp is untouched — terminal panels stay dark", () => {
+    assert.strictEqual(DRACULA["dracula-green"], "#50fa7b");
+    assert.strictEqual(DRACULA["dracula-fg"], "#f8f8f2");
   });
 });
