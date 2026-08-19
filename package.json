@@ -11,7 +11,9 @@
       "types": "./dist/index.d.ts"
     },
     "./tokens.css": "./dist/tokens.css",
-    "./globals.css": "./dist/globals.css"
+    "./globals.css": "./dist/globals.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./fonts/*": "./dist/fonts/*"
   },
   "files": [
     "dist"

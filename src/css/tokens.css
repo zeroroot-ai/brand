@@ -1,14 +1,30 @@
 /**
- * @zeroroot/brand — pure CSS custom property declarations.
+ * @zeroroot-ai/brand — pure CSS custom property declarations.
  *
- * Single locked dark terminal-hacker aesthetic: violet-led, near-black,
- * cyan-blue links, CRT scanline overlay. There is NO light mode.
+ * ONE locked light brand: "acid concrete". A concrete (non-white) ground,
+ * near-black ink, one acid-green accent, hairline rules, no ornament. There is
+ * no dark mode, no theme toggle and no preset machinery — see ADR-0064.
  *
- * No Tailwind dependency. Import this file in any frontend to get the
- * full ZeroRoot token set as CSS custom properties on :root.
+ * Two rules the whole system depends on:
+ *
+ *   1. ACID IS A FILL. --primary (acid lime) fails contrast against text sizes
+ *      on this ground. It fills buttons, active plates and live-state chips,
+ *      with --primary-foreground on top. Green TEXT is --highlight, which is
+ *      dark enough to read.
+ *   2. COLOUR MEANS ENFORCEMENT. --alt/--granted, --warning/--pending and
+ *      --destructive/--refused report what the runtime did. They are not
+ *      decoration and are not used for emphasis.
+ *
+ * Terminal panels stay dark on purpose: --terminal-bg and the Dracula ramp are
+ * scoped to them, so a transcript reads as a transcript on a light page.
+ *
+ * This file is the SINGLE SOURCE for every token. scripts/build.mjs parses it
+ * to emit the JS/TS exports, so a value is never written twice.
+ *
+ * No Tailwind dependency. Import anywhere to get the token set on :root.
  *
  * Usage:
- *   @import "@zeroroot/brand/tokens.css";
+ *   @import "@zeroroot-ai/brand/tokens.css";
  */
 
 :root {
@@ -16,102 +32,126 @@
   /* Palette — raw color ramps. Never reference from components.         */
   /* ------------------------------------------------------------------ */
 
-  /* Neutral ramp, near-black, faintly blue-violet (hue 280). */
-  --base-50:   oklch(0.985 0.004 280);
-  --base-100:  oklch(0.945 0.008 280);
-  --base-200:  oklch(0.875 0.012 280);
-  --base-300:  oklch(0.770 0.016 280);
-  --base-400:  oklch(0.620 0.020 280);
-  --base-500:  oklch(0.480 0.022 280);
-  --base-600:  oklch(0.380 0.022 280);
-  --base-700:  oklch(0.300 0.020 280);
-  --base-800:  oklch(0.235 0.018 280);
-  --base-900:  oklch(0.175 0.014 280);
-  --base-950:  oklch(0.130 0.012 280);
-  --base-1000: oklch(0.090 0.010 280);
+  /* Neutral ramp, warm concrete (hue 100). 50 is the lightest panel. */
+  --base-50:   oklch(0.985 0.003 100);
+  --base-100:  oklch(0.955 0.004 100);
+  --base-200:  oklch(0.915 0.005 100);
+  --base-300:  oklch(0.885 0.006 100);
+  --base-400:  oklch(0.780 0.007 100);
+  --base-500:  oklch(0.640 0.009 100);
+  --base-600:  oklch(0.520 0.010 100);
+  --base-700:  oklch(0.450 0.010 100);
+  --base-800:  oklch(0.320 0.012 100);
+  --base-900:  oklch(0.230 0.012 100);
+  --base-950:  oklch(0.170 0.012 100);
+  --base-1000: oklch(0.130 0.010 100);
 
-  /* Primary ramp, electric violet (hue 295). */
-  --primary-50:   oklch(0.970 0.020 295);
-  --primary-100:  oklch(0.935 0.045 295);
-  --primary-200:  oklch(0.880 0.090 295);
-  --primary-300:  oklch(0.800 0.150 295);
-  --primary-400:  oklch(0.700 0.205 295);
-  --primary-500:  oklch(0.620 0.230 295);
-  --primary-600:  oklch(0.560 0.220 295);
-  --primary-700:  oklch(0.480 0.185 295);
-  --primary-800:  oklch(0.410 0.150 295);
-  --primary-900:  oklch(0.355 0.120 295);
-  --primary-950:  oklch(0.260 0.085 295);
-  --primary-1000: oklch(0.185 0.060 295);
+  /* Primary ramp, acid green (hue 128). 500 is the brand fill. */
+  --primary-50:   oklch(0.975 0.030 128);
+  --primary-100:  oklch(0.950 0.070 128);
+  --primary-200:  oklch(0.920 0.130 128);
+  --primary-300:  oklch(0.890 0.180 128);
+  --primary-400:  oklch(0.875 0.205 128);
+  --primary-500:  oklch(0.860 0.215 128);
+  --primary-600:  oklch(0.760 0.200 130);
+  --primary-700:  oklch(0.620 0.175 131);
+  --primary-800:  oklch(0.510 0.155 132);
+  --primary-900:  oklch(0.440 0.135 132);
+  --primary-950:  oklch(0.330 0.100 132);
+  --primary-1000: oklch(0.180 0.070 128);
 
-  /* Secondary ramp, cyan-blue (hue 235). */
-  --secondary-50:   oklch(0.980 0.014 235);
-  --secondary-100:  oklch(0.950 0.034 235);
-  --secondary-200:  oklch(0.905 0.064 235);
-  --secondary-300:  oklch(0.845 0.104 235);
-  --secondary-400:  oklch(0.780 0.140 235);
-  --secondary-500:  oklch(0.710 0.150 235);
-  --secondary-600:  oklch(0.610 0.130 235);
-  --secondary-700:  oklch(0.515 0.105 235);
-  --secondary-800:  oklch(0.440 0.085 235);
-  --secondary-900:  oklch(0.390 0.070 235);
-  --secondary-950:  oklch(0.295 0.055 235);
-  --secondary-1000: oklch(0.210 0.040 235);
+  /* Secondary ramp, deep signal blue (hue 240). Carries "pending". */
+  --secondary-50:   oklch(0.970 0.015 240);
+  --secondary-100:  oklch(0.935 0.035 240);
+  --secondary-200:  oklch(0.880 0.060 240);
+  --secondary-300:  oklch(0.810 0.090 240);
+  --secondary-400:  oklch(0.720 0.115 240);
+  --secondary-500:  oklch(0.620 0.130 240);
+  --secondary-600:  oklch(0.530 0.120 240);
+  --secondary-700:  oklch(0.450 0.100 240);
+  --secondary-800:  oklch(0.380 0.080 240);
+  --secondary-900:  oklch(0.310 0.065 240);
+  --secondary-950:  oklch(0.240 0.050 240);
+  --secondary-1000: oklch(0.170 0.035 240);
 
   /* ------------------------------------------------------------------ */
   /* Semantic — Shadcn/Tailwind-mapped tokens. Use these in components.  */
   /* ------------------------------------------------------------------ */
 
-  --background:             oklch(0.17 0.012 280);   /* near-black, blue-violet tint */
-  --foreground:             oklch(0.96 0.008 280);   /* near-white, faint cool */
-  --card:                   oklch(0.21 0.014 280);   /* elevated surface */
-  --card-foreground:        oklch(0.96 0.008 280);
-  --popover:                oklch(0.21 0.014 280);
-  --popover-foreground:     oklch(0.96 0.008 280);
-  --primary:                oklch(0.58 0.225 295);   /* electric violet */
-  --primary-foreground:     oklch(0.99 0.004 295);   /* white-on-violet */
-  --secondary:              oklch(0.30 0.040 250);   /* muted dark-blue surface */
-  --secondary-foreground:   oklch(0.96 0.008 280);
-  --muted:                  oklch(0.255 0.016 280);  /* code wells / muted surface */
-  --muted-foreground:       oklch(0.76 0.020 280);   /* dim text, AA on muted/card/bg */
-  --accent:                 oklch(0.275 0.022 288);  /* hover / dialog, faint violet */
-  --accent-foreground:      oklch(0.96 0.008 280);
-  --destructive:            oklch(0.54 0.210 22);    /* alert-red FILL */
-  --destructive-foreground: oklch(0.99 0.004 22);
-  --error-text:             oklch(0.74 0.165 22);    /* legible red TEXT on dark card/bg */
-  --warning:                oklch(0.80 0.155 85);    /* amber */
-  --warning-foreground:     oklch(0.20 0.030 85);
-  --success-foreground:     oklch(0.18 0.030 162);   /* on emerald accent */
-  --overlay:                oklch(0.05 0.010 280 / 0.75);
-  --border:                 oklch(0.34 0.020 280);
-  --input:                  oklch(0.50 0.024 280);   /* input boundary, 3:1 on bg */
-  --ring:                   oklch(0.62 0.230 295);   /* violet focus ring, 3:1 on bg */
-  --chart-1:                oklch(0.62 0.230 295);   /* violet */
-  --chart-2:                oklch(0.74 0.160 162);   /* emerald */
-  --chart-3:                oklch(0.78 0.150 235);   /* cyan-blue */
-  --chart-4:                oklch(0.80 0.160 85);    /* amber */
-  --chart-5:                oklch(0.62 0.215 22);    /* red */
-  --radius:                 0.40rem;                 /* premium soft-square */
-  --sidebar:                oklch(0.19 0.013 280);
-  --sidebar-foreground:     oklch(0.96 0.008 280);
-  --sidebar-primary:        oklch(0.58 0.225 295);
-  --sidebar-primary-foreground: oklch(0.99 0.004 295);
-  --sidebar-accent:         oklch(0.275 0.022 288);
-  --sidebar-accent-foreground: oklch(0.96 0.008 280);
-  --sidebar-border:         oklch(0.32 0.020 280);
-  --sidebar-ring:           oklch(0.62 0.230 295);
+  --background:             oklch(0.915 0.005 100);
+  --foreground:             oklch(0.160 0.010 100);
+  --card:                   oklch(0.955 0.004 100);
+  --card-foreground:        oklch(0.160 0.010 100);
+  --popover:                oklch(0.985 0.003 100);
+  --popover-foreground:     oklch(0.160 0.010 100);
+
+  /* Acid. A FILL colour — never set type in it. */
+  --primary:                oklch(0.860 0.215 128);
+  --primary-foreground:     oklch(0.180 0.070 128);
+
+  --secondary:              oklch(0.885 0.006 100);
+  --secondary-foreground:   oklch(0.160 0.010 100);
+  --muted:                  oklch(0.885 0.006 100);
+  --muted-foreground:       oklch(0.450 0.010 100);
+
+  /* Shadcn "accent" is the subtle hover surface, not the brand accent. */
+  --accent:                 oklch(0.895 0.008 110);
+  --accent-foreground:      oklch(0.160 0.010 100);
+
+  --destructive:            oklch(0.520 0.215 28);
+  --destructive-foreground: oklch(0.985 0.004 28);
+  --error-text:             oklch(0.500 0.215 28);
+  --warning:                oklch(0.800 0.150 85);
+  --warning-foreground:     oklch(0.200 0.040 85);
+  --success-foreground:     oklch(0.180 0.040 150);
+  --overlay:                oklch(0.170 0.012 100 / 0.55);
+  --border:                 oklch(0.780 0.007 100);
+  --input:                  oklch(0.720 0.008 100);
+  --ring:                   oklch(0.440 0.135 132);
+
+  --chart-1:                oklch(0.440 0.135 132);
+  --chart-2:                oklch(0.480 0.145 150);
+  --chart-3:                oklch(0.450 0.100 240);
+  --chart-4:                oklch(0.560 0.130 75);
+  --chart-5:                oklch(0.520 0.215 28);
+
+  /* Stark. Corners are all but square across the system. */
+  --radius:                 0.125rem;
+
+  --sidebar:                    oklch(0.955 0.004 100);
+  --sidebar-foreground:         oklch(0.160 0.010 100);
+  --sidebar-primary:            oklch(0.860 0.215 128);
+  --sidebar-primary-foreground: oklch(0.180 0.070 128);
+  --sidebar-accent:             oklch(0.895 0.008 110);
+  --sidebar-accent-foreground:  oklch(0.160 0.010 100);
+  --sidebar-border:             oklch(0.780 0.007 100);
+  --sidebar-ring:               oklch(0.440 0.135 132);
 
   /* ------------------------------------------------------------------ */
-  /* Specialty — premium-security brand character.                       */
+  /* Specialty — brand character and enforcement state.                  */
   /* ------------------------------------------------------------------ */
 
-  --highlight:        oklch(0.68 0.255 295);   /* violet, brighter, punchier accent */
-  --alt:              oklch(0.76 0.170 162);   /* emerald, crisper */
-  --link:             oklch(0.80 0.160 235);   /* cyan-blue, crisper */
-  --glow-strength:    0.9;                     /* stronger terminal-hacker glow */
-  --scanline-opacity: 0.035;                   /* more visible CRT scanlines */
-  --scanline-color:   oklch(0.62 0.230 295);   /* violet scanline */
-  --terminal-bg:      oklch(0.090 0.010 280);  /* darkest palette value (base-1000) */
+  /* Green that can carry TEXT. `text-highlight` resolves here, not to acid. */
+  --highlight:        oklch(0.440 0.135 132);
+  --alt:              oklch(0.480 0.145 150);
+  --link:             oklch(0.450 0.145 205);
+
+  /* Enforcement outcomes. Not decoration. */
+  --granted:          oklch(0.480 0.145 150);
+  --pending:          oklch(0.480 0.120 240);
+  --refused:          oklch(0.520 0.215 28);
+
+  /* Inverted bands — hero, proof, any section cut into the page. */
+  --ink:              oklch(0.170 0.012 100);
+  --ink-foreground:   oklch(0.960 0.005 100);
+  --ink-muted:        oklch(0.700 0.010 100);
+  --ink-border:       oklch(0.320 0.012 100);
+
+  /* Terminal panels stay dark on a light page; these are scoped to them. */
+  --glow-strength:    0.35;
+  --scanline-opacity: 0.030;
+  --scanline-color:   oklch(0.860 0.215 128);
+  --terminal-bg:      oklch(0.130 0.010 100);
 
   /* ------------------------------------------------------------------ */
   /* Dracula terminal palette, scoped to terminal panels.                */
@@ -131,21 +171,22 @@
   /* Typography                                                          */
   /* ------------------------------------------------------------------ */
 
-  --display-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --display-family: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
   --display-weight: 800;
-  --text-family:    "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --text-family:    "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --mono-family:    "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* ------------------------------------------------------------------ */
-  /* Legacy --color-zd-* aliases. No new uses; existing consumers only. */
+  /* Legacy aliases (--color-zd-*). No new uses; map to semantic.        */
   /* ------------------------------------------------------------------ */
 
-  --color-zd-bg:           oklch(0.17 0.012 280);   /* => --background */
-  --color-zd-bg-deep:      oklch(0.21 0.014 280);   /* => --card */
-  --color-zd-fg:           oklch(0.96 0.008 280);   /* => --foreground */
-  --color-zd-highlight:    oklch(0.68 0.255 295);   /* => --highlight */
-  --color-zd-alt:          oklch(0.76 0.170 162);   /* => --alt */
-  --color-zd-link:         oklch(0.80 0.160 235);   /* => --link */
-  --color-zd-border:       oklch(0.34 0.020 280);   /* => --border */
-  --color-zd-accent-purple: oklch(0.58 0.225 295);  /* => --primary */
-  --color-zd-accent-orange: oklch(0.80 0.155 85);   /* => --warning */
+  --color-zd-bg:            oklch(0.915 0.005 100);
+  --color-zd-bg-deep:       oklch(0.955 0.004 100);
+  --color-zd-fg:            oklch(0.160 0.010 100);
+  --color-zd-highlight:     oklch(0.440 0.135 132);
+  --color-zd-alt:           oklch(0.480 0.145 150);
+  --color-zd-link:          oklch(0.450 0.145 205);
+  --color-zd-border:        oklch(0.780 0.007 100);
+  --color-zd-accent-purple: oklch(0.860 0.215 128);
+  --color-zd-accent-orange: oklch(0.800 0.150 85);
 }
