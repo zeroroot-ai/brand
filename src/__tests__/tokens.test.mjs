@@ -138,6 +138,20 @@ describe("acid is a fill, never text", () => {
   });
 });
 
+describe("UI affordances", () => {
+  // WCAG 2.1 asks 3:1 for the boundary of a control, not the 4.5:1 text needs.
+  // The dashboard's own token-contrast test caught --input failing this at
+  // 1.93:1 after the re-skin: the brand's tests covered text pairs and state
+  // colours but never the affordances, so a field boundary you could not see
+  // shipped. Both suites check it now; this is the one that owns the value.
+  test("the input boundary and the focus ring clear 3:1 on the ground", () => {
+    for (const name of ["input", "ring"]) {
+      const ratio = contrast(SEMANTIC[name], SEMANTIC.background);
+      assert.ok(ratio >= 3, `${name} on background is ${ratio.toFixed(2)}:1, needs 3:1`);
+    }
+  });
+});
+
 describe("enforcement colours", () => {
   test("granted, pending and refused all clear AA on the ground", () => {
     for (const name of ["granted", "pending", "refused"]) {
