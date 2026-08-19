@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/zeroroot-ai/brand/compare/brand-v0.2.1...brand-v0.3.0) (2026-08-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **tokens:** the brand is light. Consumers that hardcode a dark ground, assume near-black surfaces, or set type in --primary need updating.
+
+### Features
+
+* **tokens:** re-skin to the acid-concrete light brand ([#12](https://github.com/zeroroot-ai/brand/issues/12)) ([7004a7f](https://github.com/zeroroot-ai/brand/commit/7004a7f0ab27b79b6cd41678c30527c6cea02d4b))
+
 ## [0.2.1](https://github.com/zeroroot-ai/brand/compare/brand-v0.2.0...brand-v0.2.1) (2026-08-16)
 
 
