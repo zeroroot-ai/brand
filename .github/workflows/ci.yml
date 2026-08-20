@@ -17,4 +17,6 @@ jobs:
         with:
           node-version: '20'
       - run: node scripts/build.mjs
-      - run: node --test src/__tests__/tokens.test.mjs
+      # npm test, not a named file: a new test file must not need a CI edit
+      # to start running. Naming one file is how the second test never runs.
+      - run: npm test
