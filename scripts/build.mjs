@@ -17,6 +17,7 @@
  *   fonts.css    — @font-face rules for the self-hosted families
  *   globals.css  — full Tailwind 4 entry point (imports the two above)
  *   fonts/       — the woff2 files those @font-face rules point at
+ *   marks/       — the brand marks, as currentColor SVG for inlining
  *   index.js     — ESM exports (ALL_TOKENS, PALETTE, SEMANTIC, …)
  *   index.cjs    — CJS wrapper
  *   index.d.ts   — TypeScript declarations
@@ -32,6 +33,7 @@ const DIST = join(ROOT, "dist");
 
 mkdirSync(DIST, { recursive: true });
 mkdirSync(join(DIST, "fonts"), { recursive: true });
+mkdirSync(join(DIST, "marks"), { recursive: true });
 
 // ---------------------------------------------------------------------------
 // CSS + fonts — copy verbatim.
@@ -45,6 +47,11 @@ for (const file of ["tokens.css", "fonts.css", "globals.css"]) {
 for (const font of readdirSync(join(ROOT, "src/fonts"))) {
   copyFileSync(join(ROOT, "src/fonts", font), join(DIST, "fonts", font));
   console.log(`  dist/fonts/${font}`);
+}
+
+for (const mark of readdirSync(join(ROOT, "src/marks"))) {
+  copyFileSync(join(ROOT, "src/marks", mark), join(DIST, "marks", mark));
+  console.log(`  dist/marks/${mark}`);
 }
 
 // ---------------------------------------------------------------------------

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="zeroroot.ai">
+  <!--
+    The zeroroot CRT mark: a terminal bezel with the slashed zero on the screen.
+
+    Painted entirely in currentColor, so it takes the colour of whatever it is
+    placed inside and needs no light/dark variants. That only works when the
+    file is INLINED into the document. Referenced through <img src> it renders
+    black, because an external document has no currentColor to inherit.
+
+    Static on purpose. The mark carries no animation: SMIL cannot be silenced
+    by prefers-reduced-motion, so motion is the consumer's decision, added with
+    CSS at the site that uses it.
+  -->
+  <rect x="3" y="6" width="58" height="44" rx="2" stroke="currentColor" stroke-width="2.5"/>
+  <rect x="8" y="11" width="48" height="34" rx="1" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/>
+  <g stroke="currentColor" stroke-opacity="0.10" stroke-width="0.5">
+    <line x1="9" y1="14" x2="55" y2="14"/>
+    <line x1="9" y1="17" x2="55" y2="17"/>
+    <line x1="9" y1="20" x2="55" y2="20"/>
+    <line x1="9" y1="23" x2="55" y2="23"/>
+    <line x1="9" y1="26" x2="55" y2="26"/>
+    <line x1="9" y1="29" x2="55" y2="29"/>
+    <line x1="9" y1="32" x2="55" y2="32"/>
+    <line x1="9" y1="35" x2="55" y2="35"/>
+    <line x1="9" y1="38" x2="55" y2="38"/>
+    <line x1="9" y1="41" x2="55" y2="41"/>
+  </g>
+  <path fill-rule="evenodd" fill="currentColor" d="M 19 13 H 45 A 5 5 0 0 1 50 18 V 38 A 5 5 0 0 1 45 43 H 19 A 5 5 0 0 1 14 38 V 18 A 5 5 0 0 1 19 13 Z M 23 20 H 41 A 2 2 0 0 1 43 22 V 34 A 2 2 0 0 1 41 36 H 23 A 2 2 0 0 1 21 34 V 22 A 2 2 0 0 1 23 20 Z"/>
+  <line x1="11" y1="44" x2="53" y2="12" stroke="currentColor" stroke-width="4"/>
+  <rect x="26" y="50" width="12" height="4" fill="currentColor"/>
+  <rect x="18" y="54" width="28" height="3" fill="currentColor"/>
+  <rect x="54" y="46" width="2" height="2" fill="currentColor"/>
+</svg>

@@ -13,14 +13,15 @@
     "./tokens.css": "./dist/tokens.css",
     "./globals.css": "./dist/globals.css",
     "./fonts.css": "./dist/fonts.css",
-    "./fonts/*": "./dist/fonts/*"
+    "./fonts/*": "./dist/fonts/*",
+    "./marks/*.svg": "./dist/marks/*.svg"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test src/__tests__/tokens.test.mjs",
+    "test": "node --test src/__tests__/*.test.mjs",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
