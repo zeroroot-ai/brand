@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.2...brand-v0.4.0) (2026-08-20)
+
+
+### Features
+
+* **marks:** ship the CRT mark as an inlinable currentColor SVG ([#18](https://github.com/zeroroot-ai/brand/issues/18)) ([5b65a36](https://github.com/zeroroot-ai/brand/commit/5b65a3622a959cbbde56193e5e453f00bb03cb72))
+
 ## [0.3.2](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.1...brand-v0.3.2) (2026-08-19)
 
 

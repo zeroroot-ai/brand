@@ -1,6 +1,6 @@
 {
   "name": "@zeroroot-ai/brand",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "ZeroRoot brand design tokens, CSS custom properties, and theme utilities",
   "license": "Apache-2.0",
   "type": "module",
