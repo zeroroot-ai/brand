@@ -1,0 +1,45 @@
+{
+  "name": "@zeroroot-ai/brand",
+  "version": "0.4.0",
+  "description": "ZeroRoot brand design tokens, CSS custom properties, and theme utilities",
+  "license": "Elastic-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./globals.css": "./dist/globals.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./fonts/*": "./dist/fonts/*",
+    "./marks/*.svg": "./dist/marks/*.svg"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test src/__tests__/*.test.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeroroot-ai/brand.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "provenance": true
+  }
+}

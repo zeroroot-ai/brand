@@ -1,0 +1,274 @@
+/* @zeroroot-ai/brand globals.css — Tailwind 4 entry point.
+ * Import this in place of your own globals.css to adopt the full
+ * ZeroRoot "acid concrete" brand: a concrete ground, near-black ink, one
+ * acid-green accent, hairline rules, no ornament. One locked LIGHT brand —
+ * no dark mode, no toggle, no presets (ADR-0064).
+ *
+ * Requires: tailwindcss 4.x, tailwindcss-animate
+ *
+ * Usage (Next.js / Tailwind 4):
+ *   @import "tailwindcss";
+ *   @plugin "tailwindcss-animate";
+ *   @custom-variant dark (&);
+ *   @import "@zeroroot/brand/globals.css";
+ */
+
+/* ----------------------------------------------------------------------
+ * Canonical design system. ONE immutable light brand: acid green on a
+ * warm concrete ground, deep-teal links, near-black ink.
+ *
+ * Acid (--primary) is a FILL. It fails contrast at text sizes on this
+ * ground, so type is never set in it; --highlight is the green that carries
+ * text. Enforcement colors (--granted/--pending/--refused) report what the
+ * runtime did and are never used for emphasis.
+ * Semantic tokens drive every Shadcn primitive; specialty tokens
+ * (--highlight, --alt, --link, --glow-strength, --scanline-opacity)
+ * carry the premium-security brand character. Hardcoded color literals
+ * are forbidden in app/** and components/**; use the tokens below.
+ * ---------------------------------------------------------------------- */
+
+/* Fonts and tokens are authored once, in their own files, and pulled in here.
+ * Editing a color means editing tokens.css and nothing else. */
+@import "./fonts.css";
+@import "./tokens.css";
+
+@theme inline {
+  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards)
+    linear infinite;
+
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 1;
+    }
+  }
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-error-text: var(--error-text);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success-foreground: var(--success-foreground);
+  --color-overlay: var(--overlay);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-highlight: var(--highlight);
+  --color-alt: var(--alt);
+  --color-link: var(--link);
+
+  /* Enforcement outcomes. */
+  --color-granted: var(--granted);
+  --color-pending: var(--pending);
+  --color-refused: var(--refused);
+
+  /* Inverted bands. */
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+  --color-terminal-bg: var(--terminal-bg);
+
+  --color-dracula-fg: var(--dracula-fg);
+  --color-dracula-comment: var(--dracula-comment);
+  --color-dracula-cyan: var(--dracula-cyan);
+  --color-dracula-green: var(--dracula-green);
+  --color-dracula-orange: var(--dracula-orange);
+  --color-dracula-pink: var(--dracula-pink);
+  --color-dracula-purple: var(--dracula-purple);
+  --color-dracula-red: var(--dracula-red);
+  --color-dracula-yellow: var(--dracula-yellow);
+
+  --font-display: var(--display-family);
+  --display-weight: var(--display-weight);
+  --font-sans: var(--text-family);
+  --font-mono: var(--mono-family);
+}
+
+@utility bg-zd-gradient {
+  background: linear-gradient(135deg, var(--background) 0%, var(--card) 55%, var(--background) 100%);
+  background-attachment: fixed;
+}
+
+/* An inverted band cut into the page: hero, proof, any section that should
+ * read as a different material. Terminal panels use --terminal-bg instead. */
+@utility bg-ink-band {
+  background: var(--ink);
+  color: var(--ink-foreground);
+}
+
+/* Phosphor glow. Only legible on an inverted band or a terminal panel, so it
+ * is drawn with the acid fill rather than the text green. */
+@utility text-zd-glow {
+  text-shadow: 0 0 calc(10px * var(--glow-strength)) var(--primary),
+               0 0 calc(20px * var(--glow-strength)) color-mix(in oklch, var(--primary) 30%, transparent);
+}
+
+@keyframes zd-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Brand CRT flicker, used on hero lockups + standalone marks to evoke an
+ * unstable phosphor monitor. 92% of the cycle is steady so the flicker
+ * reads as a glitch, not a flash. */
+@keyframes zda-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93%           { opacity: 0.62; }
+  94%           { opacity: 1; }
+  95%           { opacity: 0.84; }
+}
+
+@utility zd-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background-color: var(--highlight);
+  box-shadow: 0 0 calc(5px * var(--glow-strength)) var(--highlight);
+  animation: zd-blink 1s infinite;
+  vertical-align: text-bottom;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Inter Tight holds at 400; the mono heft the old brand needed is gone. */
+    font-weight: 400;
+  }
+
+  .font-display {
+    font-weight: var(--display-weight);
+  }
+
+  [data-slot="button"],
+  [data-slot="dialog-trigger"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="command-item"],
+  [data-slot="toggle-group-item"],
+  [data-slot="dropdown-menu-trigger"],
+  [data-slot="popover-trigger"],
+  [data-slot="tooltip-trigger"],
+  [data-slot="sheet-trigger"],
+  [data-slot="tabs-trigger"],
+  [data-slot="collapsible-trigger"] {
+    @apply cursor-pointer!;
+  }
+
+  [data-slot="dialog-overlay"],
+  [data-slot="sheet-overlay"],
+  [data-slot="drawer-overlay"] {
+    @apply bg-overlay! backdrop-blur-sm;
+  }
+}
+
+/* Global CRT scanline overlay, kept as a restrained premium texture. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--scanline-color) 2px,
+    var(--scanline-color) 4px
+  );
+  opacity: var(--scanline-opacity);
+}
+
+.glow-green {
+  box-shadow: 0 0 calc(15px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 40%, transparent);
+}
+.text-glow-green {
+  text-shadow: 0 0 calc(8px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 60%, transparent);
+}
+.text-glow-green-soft {
+  text-shadow: 0 0 calc(3px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 35%, transparent);
+}
+.border-glow-green {
+  box-shadow: 0 0 calc(4px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 30%, transparent),
+              inset 0 0 calc(2px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 10%, transparent);
+}
+
+.data-value {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  text-shadow: 0 0 calc(4px * var(--glow-strength)) color-mix(in oklch, var(--highlight) 30%, transparent);
+}
+
+.bg-grid-hack {
+  background-image:
+    radial-gradient(circle, color-mix(in oklch, var(--highlight) 15%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass-hack {
+  background: color-mix(in oklch, var(--highlight) 3%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in oklch, var(--highlight) 10%, transparent);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: color-mix(in oklch, var(--foreground) 8%, transparent); }
+::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--primary) 30%, transparent); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklch, var(--primary) 50%, transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { display: none; }
+  .text-glow-green, .text-glow-green-soft { text-shadow: none; }
+  .glow-green, .border-glow-green { box-shadow: none; }
+}
