@@ -1,0 +1,26 @@
+# Dependabot keeps the pinned action SHAs and the npm surface current.
+# Scorecard's Dependency-Update-Tool check reads this file (brand#1).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      patch-and-minor:
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - github-actions
