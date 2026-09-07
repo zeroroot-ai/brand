@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/zeroroot-ai/brand/compare/brand-v0.4.0...brand-v0.4.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* **ci:** add dependabot config ([#2](https://github.com/zeroroot-ai/brand/issues/2)) ([25f5fb0](https://github.com/zeroroot-ai/brand/commit/25f5fb0597adfaacde47a49238db182d78c9feed)), closes [#1](https://github.com/zeroroot-ai/brand/issues/1)
+
 ## [0.4.0](https://github.com/zeroroot-ai/brand/compare/brand-v0.3.2...brand-v0.4.0) (2026-08-20)
 
 
