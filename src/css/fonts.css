@@ -8,6 +8,16 @@
  *
  * Imported by globals.css. Import directly alongside tokens.css if you are not
  * using the Tailwind entry point.
+ *
+ * NEITHER FAMILY IS OURS. Inter Tight is Copyright 2022 The Inter Project
+ * Authors (https://github.com/rsms/inter-tight). JetBrains Mono is Copyright
+ * 2020 The JetBrains Mono Project Authors
+ * (https://github.com/JetBrains/JetBrainsMono). Both are licensed under the
+ * SIL Open Font License, Version 1.1, and that licence requires the copyright
+ * notice and the licence text to travel with every copy of the font. They do:
+ * `fonts/Inter-Tight-OFL.txt` and `fonts/JetBrains-Mono-OFL.txt` sit in the
+ * same directory as the woff2 files, and the root NOTICE repeats both. If you
+ * add a family here, add its licence text there in the same commit.
  */
 
 @font-face {

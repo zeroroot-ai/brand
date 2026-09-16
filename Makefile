@@ -18,8 +18,10 @@ all: check ## Default: run the full CI-equivalent gate
 build: ## Compile design tokens -> dist/ (ESM + CJS + d.ts + CSS)
 	node scripts/build.mjs
 
-test: ## Run the node:test token suite
-	node --test src/__tests__/tokens.test.mjs
+# Not a named file: a new test file must not need a Makefile edit to start
+# running. Naming one file is how the second and third test never ran.
+test: ## Run the node:test suite
+	npm test
 
 check: build test ## CI-equivalent gate (mirrors ci.yml: build then test)
 

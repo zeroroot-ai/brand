@@ -19,7 +19,9 @@
  *   tokens.css   — pure CSS custom properties, no Tailwind
  *   fonts.css    — @font-face rules for the self-hosted families
  *   globals.css  — full Tailwind 4 entry point (imports the two above)
- *   fonts/       — the woff2 files those @font-face rules point at
+ *   fonts/       — the woff2 files those @font-face rules point at, and the
+ *                  OFL text of the two third-party families they hold
+ *   NOTICE       — this package's licence and the fonts' upstream licences
  *   marks/       — the brand marks, as currentColor SVG for inlining
  *   index.js     — ESM exports (ALL_TOKENS, PALETTE, SEMANTIC, …)
  *   index.cjs    — CJS wrapper
@@ -47,10 +49,17 @@ for (const file of ["tokens.css", "fonts.css", "globals.css"]) {
   console.log(`  dist/${file}`);
 }
 
+// Everything in src/fonts/ is copied, the woff2 files and the OFL text beside
+// them. SIL OFL 1.1 clause 2 requires the copyright notice and the licence to
+// travel with every copy of the font, and `exports["./fonts/*"]` lets a
+// consumer take that directory on its own, so the licence lives in it.
 for (const font of readdirSync(join(ROOT, "src/fonts"))) {
   copyFileSync(join(ROOT, "src/fonts", font), join(DIST, "fonts", font));
   console.log(`  dist/fonts/${font}`);
 }
+
+copyFileSync(join(ROOT, "NOTICE"), join(DIST, "NOTICE"));
+console.log("  dist/NOTICE");
 
 for (const mark of readdirSync(join(ROOT, "src/marks"))) {
   copyFileSync(join(ROOT, "src/marks", mark), join(DIST, "marks", mark));
