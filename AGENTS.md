@@ -46,4 +46,4 @@ make check   # build then test (mirrors CI exactly)
 
 - Org-level workflow: [`AGENTS.md`](https://github.com/zeroroot-ai/.github/blob/main/AGENTS.md)
 - Third-party attribution: [`NOTICE`](NOTICE), [`src/fonts/Inter-Tight-OFL.txt`](src/fonts/Inter-Tight-OFL.txt), [`src/fonts/JetBrains-Mono-OFL.txt`](src/fonts/JetBrains-Mono-OFL.txt)
-- Consumers: [`dashboard`](https://github.com/zeroroot-ai/dashboard), [`www`](https://github.com/zeroroot-ai/www), [`docs-site`](https://github.com/zeroroot-ai/docs-site)
+- Consumers: [`dashboard`](https://github.com/zeroroot-ai/dashboard), `www` (private since 2026-09-16), [`docs-site`](https://github.com/zeroroot-ai/docs-site)
