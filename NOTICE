@@ -1,0 +1,48 @@
+@zeroroot-ai/brand
+Copyright 2026 Zero Root AI
+
+This product is licensed under the Elastic License 2.0. See LICENSE.
+Elastic License 2.0 is source-available, not open source.
+
+That licence covers the design tokens, the CSS, the marks and the build
+script. It does not cover the two third-party font families this package
+redistributes. Those keep their own upstream licence, which is not ours to
+change.
+
+--------------------------------------------------------------------------
+Third-party fonts redistributed in this package
+--------------------------------------------------------------------------
+
+Inter Tight
+  Version 3.004, latin and latin-ext subsets.
+  Files: src/fonts/inter-tight-latin.woff2
+         src/fonts/inter-tight-latin-ext.woff2
+         (published as dist/fonts/*.woff2)
+  Copyright 2022 The Inter Project Authors
+  (https://github.com/rsms/inter-tight)
+  Licensed under the SIL Open Font License, Version 1.1.
+  Full licence text: src/fonts/Inter-Tight-OFL.txt
+
+JetBrains Mono
+  Version 2.211, latin and latin-ext subsets.
+  Files: src/fonts/jetbrains-mono-latin.woff2
+         src/fonts/jetbrains-mono-latin-ext.woff2
+         (published as dist/fonts/*.woff2)
+  Copyright 2020 The JetBrains Mono Project Authors
+  (https://github.com/JetBrains/JetBrainsMono)
+  Licensed under the SIL Open Font License, Version 1.1.
+  Full licence text: src/fonts/JetBrains-Mono-OFL.txt
+
+The copyright line and the version above are read from each file's own OpenType
+`name` table, records 0, 1 and 5. Neither family declares a Reserved Font Name,
+so the subsets keep the original family names.
+
+The OFL permits this redistribution. Clause 2 sets the condition, and it is why
+the two OFL.txt files sit in the same directory as the woff2 files they cover:
+
+    2) Original or Modified Versions of the Font Software may be bundled,
+    redistributed and/or sold with any software, provided that each copy
+    contains the above copyright notice and this license.
+
+OFL clause 1 forbids selling the Font Software by itself. Nothing here does
+that: the fonts ship as part of a design-token package.
