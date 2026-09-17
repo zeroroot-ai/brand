@@ -37,8 +37,8 @@ make check   # build then test (mirrors CI exactly)
   don't unilaterally reship the look.
 - **The fonts are not ours.** Inter Tight and JetBrains Mono are SIL Open
   Font License 1.1, and this package republishes them on the public npm
-  registry. OFL clause 2 makes the copyright notice and the licence text a
-  condition of that. Adding a family means adding its licence text to
+  registry. OFL clause 2 makes the copyright notice and the license text a
+  condition of that. Adding a family means adding its license text to
   `src/fonts/` and its entry to [`NOTICE`](NOTICE) in the same commit.
   `src/__tests__/fonts.test.mjs` fails the build if you do not.
 
